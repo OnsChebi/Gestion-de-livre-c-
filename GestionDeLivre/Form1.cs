@@ -73,34 +73,72 @@ namespace GestionDeLivre
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string title = title_txt.Text;
+            string author = author_txt.Text;
+            string isbn = isbn_txt.Text;
+            // Validate user input
+            if (string.IsNullOrEmpty(title))
+            {
+                MessageBox.Show("Please enter a title.", "Missing Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit the event handler method
+            }
+            if (string.IsNullOrEmpty(author))
+            {
+                MessageBox.Show("Please enter an author.", "Missing Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit the event handler method
+            }
+            if (string.IsNullOrEmpty(isbn))
+            {
+                MessageBox.Show("Please enter an ISBN.", "Missing Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit the event handler method
+            }
             var con = new SQLiteConnection(cs);
             con.Open();
             var cmd = new SQLiteCommand(con);
-            try
+            
+            // Check if a book with the same ISBN already exists
+            var checkCmd = new SQLiteCommand("SELECT COUNT(*) FROM livre WHERE isbn = @isbn", con);
+            checkCmd.Parameters.AddWithValue("@isbn", isbn);
+            var count = Convert.ToInt32(checkCmd.ExecuteScalar());
+            if (count == 0)
             {
-                cmd.CommandText = "INSERT INTO livre(title, author, isbn) VALUES(@title, @author, @isbn)";
-                string title = title_txt.Text;
-                string author = author_txt.Text;
-                string isbn = isbn_txt.Text;
+                // ISBN does not exist in the table
+                var query = new SQLiteCommand(con);
+                try
+                {
+                    cmd.CommandText = "INSERT INTO livre(title, author, isbn) VALUES(@title, @author, @isbn)";
+                    cmd.Parameters.AddWithValue("@title", title);
+                    cmd.Parameters.AddWithValue("@author", author);
+                    cmd.Parameters.AddWithValue("@isbn", isbn);
 
-                cmd.Parameters.AddWithValue("@title", title);
-                cmd.Parameters.AddWithValue("@author", author);
-                cmd.Parameters.AddWithValue("@isbn", isbn);
+                    dataGridView1.ColumnCount = 3;
 
-                dataGridView1.ColumnCount = 3;
-               
-                string[] row = new string[] { title, author, isbn };
-                dataGridView1.Rows.Add(row);
+                    string[] row = new string[] { title, author, isbn };
+                    dataGridView1.Rows.Add(row);
 
-                cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("The book has been added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {   // If there is an error during insert, show it to the user
+                    MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //Console.WriteLine("cannot insert data");
+                    return;
+                }
+
             }
-            catch (Exception)
+            else
             {
-                Console.WriteLine("cannot insert data");
-                return;
+                // ISBN exists - book has already been added
+                // Console.WriteLine("A book with this ISBN already exists.");
+                // ISBN exists - book has already been added, inform the user
+                MessageBox.Show("A book with this ISBN already exists. Please use a unique ISBN.", "ISBN Duplicate", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
+            con.Close();
         }
+
+    
 
         private void label2_Click(object sender, EventArgs e)
         {
@@ -146,18 +184,34 @@ namespace GestionDeLivre
         private void update_Click(object sender, EventArgs e)
         {
             string connectionString = @"Data Source=" + Application.StartupPath + "\\livreDB.db;Version=3;";
-            string query = "UPDATE livre Set isbn=@isbn where title=@title";
+            string query = "UPDATE livre SET title=@title, author=@author WHERE isbn=@isbn";
 
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
-                conn.Open();
+                try 
+                { 
+                    conn.Open();
 
-                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@isbn", isbn_txt.Text);
+                        cmd.Parameters.AddWithValue("@title", title_txt.Text);
+                        cmd.Parameters.AddWithValue("@author", author_txt.Text);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("The book has been updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No book found with the given ISBN to update.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                }
+                catch (Exception ex)
                 {
-                    cmd.Parameters.AddWithValue("@isbn", isbn_txt.Text);
-                    cmd.Parameters.AddWithValue("@title", title_txt.Text);
-
-                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
@@ -178,17 +232,27 @@ namespace GestionDeLivre
                         string query = "DELETE FROM livre where title=@Title";
                         cmd.CommandText = query;
                         cmd.Parameters.AddWithValue("@Title", title_txt.Text);
-                        cmd.ExecuteNonQuery(); // This line has been changed
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        // Check if any row was actually deleted
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("The book has been deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No book found with the given title to delete.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
                 }
 
                 dataGridView1.Rows.Clear();
-                data_show();
+                data_show();// Refresh data in dataGridView1
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("cannot delete data");
-                return;
+                //Console.WriteLine("cannot delete data");
+                //return;
+                MessageBox.Show("Cannot delete data. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
