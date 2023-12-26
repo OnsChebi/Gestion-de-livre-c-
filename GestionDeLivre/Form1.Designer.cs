@@ -31,18 +31,18 @@
             this.Title = new System.Windows.Forms.Label();
             this.Author = new System.Windows.Forms.Label();
             this.ISBN = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.title_txt = new System.Windows.Forms.TextBox();
+            this.author_txt = new System.Windows.Forms.TextBox();
+            this.isbn_txt = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.Titre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Auteur = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button1 = new System.Windows.Forms.Button();
+            this.delete = new System.Windows.Forms.Button();
+            this.update = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,29 +79,29 @@
             this.ISBN.Text = "ISBN";
             this.ISBN.Click += new System.EventHandler(this.ISBN_Click);
             // 
-            // textBox1
+            // title_txt
             // 
-            this.textBox1.Location = new System.Drawing.Point(101, 101);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(124, 20);
-            this.textBox1.TabIndex = 3;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.title_txt.Location = new System.Drawing.Point(101, 101);
+            this.title_txt.Name = "title_txt";
+            this.title_txt.Size = new System.Drawing.Size(124, 20);
+            this.title_txt.TabIndex = 3;
+            this.title_txt.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // textBox2
+            // author_txt
             // 
-            this.textBox2.Location = new System.Drawing.Point(101, 138);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(124, 20);
-            this.textBox2.TabIndex = 4;
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            this.author_txt.Location = new System.Drawing.Point(101, 138);
+            this.author_txt.Name = "author_txt";
+            this.author_txt.Size = new System.Drawing.Size(124, 20);
+            this.author_txt.TabIndex = 4;
+            this.author_txt.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
-            // textBox3
+            // isbn_txt
             // 
-            this.textBox3.Location = new System.Drawing.Point(101, 177);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(124, 20);
-            this.textBox3.TabIndex = 5;
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            this.isbn_txt.Location = new System.Drawing.Point(101, 177);
+            this.isbn_txt.Name = "isbn_txt";
+            this.isbn_txt.Size = new System.Drawing.Size(124, 20);
+            this.isbn_txt.TabIndex = 5;
+            this.isbn_txt.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // dataGridView1
             // 
@@ -117,6 +117,21 @@
             this.dataGridView1.TabIndex = 6;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
+            // Titre
+            // 
+            this.Titre.HeaderText = "Title";
+            this.Titre.Name = "Titre";
+            // 
+            // Auteur
+            // 
+            this.Auteur.HeaderText = "Author";
+            this.Auteur.Name = "Auteur";
+            // 
+            // id
+            // 
+            this.id.HeaderText = "ISBN";
+            this.id.Name = "id";
+            // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Georgia", 10F, System.Drawing.FontStyle.Bold);
@@ -129,26 +144,28 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // delete
             // 
-            this.button2.Font = new System.Drawing.Font("Georgia", 10F, System.Drawing.FontStyle.Bold);
-            this.button2.ForeColor = System.Drawing.Color.Red;
-            this.button2.Location = new System.Drawing.Point(84, 283);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(97, 35);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Delete";
-            this.button2.UseVisualStyleBackColor = true;
+            this.delete.Font = new System.Drawing.Font("Georgia", 10F, System.Drawing.FontStyle.Bold);
+            this.delete.ForeColor = System.Drawing.Color.Red;
+            this.delete.Location = new System.Drawing.Point(84, 283);
+            this.delete.Name = "delete";
+            this.delete.Size = new System.Drawing.Size(97, 35);
+            this.delete.TabIndex = 8;
+            this.delete.Text = "Delete";
+            this.delete.UseVisualStyleBackColor = true;
+            this.delete.Click += new System.EventHandler(this.delete_Click);
             // 
-            // button3
+            // update
             // 
-            this.button3.Font = new System.Drawing.Font("Georgia", 10F, System.Drawing.FontStyle.Bold);
-            this.button3.Location = new System.Drawing.Point(139, 224);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(97, 35);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "Update";
-            this.button3.UseVisualStyleBackColor = true;
+            this.update.Font = new System.Drawing.Font("Georgia", 10F, System.Drawing.FontStyle.Bold);
+            this.update.Location = new System.Drawing.Point(139, 224);
+            this.update.Name = "update";
+            this.update.Size = new System.Drawing.Size(97, 35);
+            this.update.TabIndex = 9;
+            this.update.Text = "Update";
+            this.update.UseVisualStyleBackColor = true;
+            this.update.Click += new System.EventHandler(this.update_Click);
             // 
             // label1
             // 
@@ -169,21 +186,6 @@
             this.label2.TabIndex = 11;
             this.label2.Text = "Gestion De Livre";
             // 
-            // Titre
-            // 
-            this.Titre.HeaderText = "Title";
-            this.Titre.Name = "Titre";
-            // 
-            // Auteur
-            // 
-            this.Auteur.HeaderText = "Author";
-            this.Auteur.Name = "Auteur";
-            // 
-            // id
-            // 
-            this.id.HeaderText = "ISBN";
-            this.id.Name = "id";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -191,13 +193,13 @@
             this.ClientSize = new System.Drawing.Size(817, 375);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.update);
+            this.Controls.Add(this.delete);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.isbn_txt);
+            this.Controls.Add(this.author_txt);
+            this.Controls.Add(this.title_txt);
             this.Controls.Add(this.ISBN);
             this.Controls.Add(this.Author);
             this.Controls.Add(this.Title);
@@ -215,13 +217,13 @@
         private System.Windows.Forms.Label Title;
         private System.Windows.Forms.Label Author;
         private System.Windows.Forms.Label ISBN;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox title_txt;
+        private System.Windows.Forms.TextBox author_txt;
+        private System.Windows.Forms.TextBox isbn_txt;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button delete;
+        private System.Windows.Forms.Button update;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Titre;
